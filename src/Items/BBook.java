@@ -28,7 +28,7 @@ public class BBook extends AItem {
         this.author = author;
     }
     public void setCount(int pageCount) {
-        if(pageCount<=0) {
+        if(pageCount>=0) {
             this.pageCount = pageCount;
         }
     }

@@ -31,7 +31,7 @@ public class Faculty extends Person {
                 "- Name: " + getName() + "\n" +
                 "- Outstanding Fees: $" + getOutstandingFee() + "\n" +
                 "- Active Loans: " + getLoans().size() + "\n" +
-                "-Max Items Allowed: "+getMaxItems()+
+                "-Max Items Allowed: "+getMaxItems()+"\n"+
                 "- Loan Bonus Days: +" + getLoanBonusDays();
     }
 }

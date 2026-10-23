@@ -19,16 +19,19 @@ public abstract class AItem implements Identifiable {
     }
 
     public AItem(String ID, String Title, int Year, Genre genre, ItemStatus Status ) {
+        if (ID == null || ID.isBlank()) {
+            throw new IllegalArgumentException("ID must not be blank");
+        }
         this.ID = ID;
-        this.Title = Title;
-        this.Year = Year;
-        this.genre = genre;
-        this.Status = Status;
-
+        setTitle(Title);
+        setYear(Year);
+        setGenre(genre);
+        setStatus(Status);
         itemCount++;
     }
 
     public static int getItemCount() { return itemCount;}
+    @Override 
     public String getID() {return ID;}
     public String getTitle() {return Title;}
     public int getYear() {return Year;}
@@ -41,7 +44,7 @@ public abstract class AItem implements Identifiable {
         }
     }*/
     public void setTitle(String Title) {
-        if(Title ==null || Title==""){
+        if(Title ==null || Title.isBlank()){
 
             throw new IllegalArgumentException("Title can't be blank");
         }
@@ -54,10 +57,16 @@ public abstract class AItem implements Identifiable {
         this.Year = Year;
     }
     public void setGenre(Genre genre) {
+        if (genre == null) {
+            throw new IllegalArgumentException("The genre is null for the book");
+        }
 
                 this.genre = genre;
     }
     public void setStatus(ItemStatus Status) {
+        if (Status == null) {
+            throw new IllegalArgumentException("Status must not be null");
+        }
         this.Status= Status;
     }
     @Override
@@ -74,8 +83,8 @@ public abstract class AItem implements Identifiable {
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-        AItem aItem = (AItem) o;
-        return this.ID.equals(aItem.ID);
+        AItem other = (AItem) o;
+        return this.ID.equals(other.ID);
     }
 
     @Override

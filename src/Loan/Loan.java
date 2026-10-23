@@ -5,6 +5,8 @@ import Items.AItem;
 import java.time.LocalDate;
 
 public class Loan {
+
+      private static final int NOT_RETURNED = -1;
     private final String loanID;
     private final AItem item;
     private final Person member; // Replace Object with your Member class/interface later
@@ -21,13 +23,13 @@ public class Loan {
         this.startDate = startDate;
 
         // Automatically calculates due date using the runtime polymorphism you built!
-        this.dueDate = startDate.plusDays(item.getLoanPeriodDays());
+        this.dueDate = startDate.plusDays(item.getLoanPeriodDays()+ member.getLoanBonusDays());
         this.returnDate = null;
     }
 
     public String getLoanID() { return loanID; }
     public AItem getItem() { return item; }
-    public Object getMember() { return member; }
+    public Person getMember() { return member; }
     public LocalDate getStartDate() { return startDate; }
     public LocalDate getDueDate() { return dueDate; }
     public LocalDate getReturnDate() { return returnDate; }
