@@ -92,7 +92,7 @@ public abstract class AItem implements Identifiable {
         return ID.hashCode();
     }
 
-    public abstract void Loan();
+    //public abstract void Loan();
     public abstract int getLoanPeriodDays();
     public abstract double getDailyFee();
 }

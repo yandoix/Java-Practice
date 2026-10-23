@@ -35,7 +35,7 @@ public class BDVD extends AItem {
 
     @Override
     public int getLoanPeriodDays() {
-        return 7;
+        return 3;
     }
 
     @Override

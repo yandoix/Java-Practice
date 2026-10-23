@@ -28,9 +28,10 @@ public class BBook extends AItem {
         this.author = author;
     }
     public void setCount(int pageCount) {
-        if(pageCount>=0) {
-            this.pageCount = pageCount;
+        if(pageCount<=0) {
+            throw new IllegalArgumentException("The page count is 0 or negative");
         }
+         this.pageCount = pageCount;
     }
 
     public void Loan() {
@@ -43,7 +44,7 @@ public class BBook extends AItem {
 
     @Override
     public int getLoanPeriodDays() {
-        return 14;
+        return 21;
     }
     
     @Override

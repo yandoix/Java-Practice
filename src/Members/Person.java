@@ -1,19 +1,18 @@
 package Members;
 
 import java.util.List;
+import java.util.Collections; 
+import java.util.ArrayList;
 
 import Interfaces.Feeable;
 import Interfaces.Identifiable;
 import Loan.Loan;
-
-import java.util.ArrayList;
-
 public abstract class Person implements Identifiable, Feeable {
 
-    private String uniqueID;
+    private final String uniqueID;
     private String name;
     private double outstandingFee;
-    private List<Loan> loans = new ArrayList<>();
+    private final List<Loan> loans = new ArrayList<>();
 
     public Person(String uniqueID, String name) {
         this(uniqueID, name, 0.0, new ArrayList<>());
@@ -22,9 +21,8 @@ public abstract class Person implements Identifiable, Feeable {
     public Person(String uniqueID, String name, double outstandingFee, List<Loan> loans) {
 
         this.uniqueID = uniqueID;
-        this.name = name;
+        setName(name);
         this.outstandingFee =outstandingFee;
-        this.loans = new ArrayList<>();
 
         if (loans != null) {
             this.loans.addAll(loans); // Safely copies the loans list
@@ -35,7 +33,7 @@ public abstract class Person implements Identifiable, Feeable {
     public String getID() {return uniqueID;}
     public String getName() { return name; }
     public double getOutstandingFee() {  return outstandingFee; }
-    public List<Loan> getLoans() { return this.loans;  }
+    public List<Loan> getLoans() { return Collections.unmodifiableList(loans); }
     
     public void setName(String name) { 
         if (name != null && !name.trim().isEmpty()) {
@@ -44,6 +42,17 @@ public abstract class Person implements Identifiable, Feeable {
     }
     public void setOutstandingFee(double outstandingFee) { 
         this.outstandingFee = outstandingFee; 
+    }
+
+    public void addLoan(Loan loan) {
+        if (loan == null) {
+            throw new IllegalArgumentException("Loan must not be null");
+        }
+        loans.add(loan);
+    }
+
+    public boolean removeLoan(Loan loan) {
+        return loans.remove(loan);
     }
 
     @Override
@@ -81,9 +90,10 @@ public abstract class Person implements Identifiable, Feeable {
 
     @Override
     public void addFee(double amount) {
-        if (amount > 0) {
-            this.outstandingFee += amount;
+        if (amount <= 0) {
+            throw new IllegalArgumentException("Amount added is 0 or less than 0");
         }
+        this.outstandingFee += amount;
     }
 
     public abstract int getMaxItems();

@@ -1,6 +1,6 @@
 package Loan;
 
-import Members.*;
+import Members.Person;
 import Items.AItem;
 import java.time.LocalDate;
 
@@ -34,10 +34,22 @@ public class Loan {
     public LocalDate getDueDate() { return dueDate; }
     public LocalDate getReturnDate() { return returnDate; }
 
+    public boolean isReturned() { return returnDate != null; }
+
     public void setReturnDate(LocalDate returnDate) {
+        if (returnDate == null) {
+            throw new IllegalArgumentException("Return date must not be null");
+        }
+        if (isReturned()) {
+            throw new IllegalStateException("Loan " + loanID + " has already been returned");
+        }
+        if (returnDate.isBefore(startDate)) {
+            throw new IllegalArgumentException(
+                "Return date " + returnDate + " is before start date " + startDate);
+        }
         this.returnDate = returnDate;
     }
-
+    
     @Override
     public String toString() {
         return "Loan Details:\n" +
