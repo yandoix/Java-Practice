@@ -5,6 +5,7 @@ public abstract class AItem implements Identifiable {
 
     private static final int MIN_YEAR = 1450;
     private static final int MAX_YEAR = 2026;
+    public static final double LATE_FEE_CAP = 10.00;
 
     private static int itemCount = 0;
 
@@ -15,7 +16,7 @@ public abstract class AItem implements Identifiable {
     private ItemStatus Status;
 
     public AItem(String ID, String Title, ItemStatus Status) {
-        this(ID, Title,0,null, Status);
+        this(ID, Title,2026,Genre.TECH, Status);
     }
 
     public AItem(String ID, String Title, int Year, Genre genre, ItemStatus Status ) {
@@ -93,6 +94,15 @@ public abstract class AItem implements Identifiable {
     }
 
     //public abstract void Loan();
+
+    public double calculateLateFee(int daysLate) {
+        if (daysLate<=0) {
+            return 0.00;
+        }
+        double fee = daysLate * getDailyFee();
+        return Math.min(fee,LATE_FEE_CAP);
+
+    }
     public abstract int getLoanPeriodDays();
     public abstract double getDailyFee();
 }

@@ -6,7 +6,7 @@ import java.time.LocalDate;
 
 public class Loan {
 
-      private static final int NOT_RETURNED = -1;
+
     private final String loanID;
     private final AItem item;
     private final Person member; // Replace Object with your Member class/interface later
@@ -49,7 +49,7 @@ public class Loan {
         }
         this.returnDate = returnDate;
     }
-    
+
     @Override
     public String toString() {
         return "Loan Details:\n" +
