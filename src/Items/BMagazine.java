@@ -22,7 +22,7 @@ public class BMagazine extends AItem {
         this.issueNumber=issueNumber;
     }
     public void setPublisher(String publisher) {
-        if(publisher==null || publisher.equals("")){
+        if(publisher==null || publisher.trim().isEmpty()){
             throw new IllegalArgumentException("Publisher can't be unknown");
         }
         this.publisher = publisher;

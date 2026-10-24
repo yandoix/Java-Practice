@@ -56,14 +56,14 @@ public abstract class AItem implements Identifiable {
     }
     public void setGenre(Genre genre) {
         if (genre == null) {
-            throw new NullPointerException("The genre is null for the book");
+            throw new IllegalArgumentException("The genre is null for the book");
         }
 
                 this.genre = genre;
     }
     public void setStatus(ItemStatus Status) {
         if (Status == null) {
-            throw new NullPointerException("Status must not be null");
+            throw new IllegalArgumentException("Status must not be null");
         }
         this.Status= Status;
     }

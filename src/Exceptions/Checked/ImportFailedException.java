@@ -1,6 +1,6 @@
-package Exceptions;
+package Exceptions.Checked;
 
-public class ImportFailedException extends Exception {
+public class ImportFailedException extends zLibraryException {
 
     private static final long serialVersionUID = 1L;
 

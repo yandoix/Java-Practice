@@ -45,7 +45,7 @@ public abstract class Person implements Identifiable, Feeable {
     
     public void setName(String name) { 
         if (name == null || name.trim().isEmpty()) {
-            throw new NullPointerException("setName value is empty.");
+            throw new IllegalArgumentException("setName value is empty.");
         }
         this.name=name;
     }
