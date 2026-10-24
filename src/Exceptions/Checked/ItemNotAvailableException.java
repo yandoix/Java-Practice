@@ -14,6 +14,12 @@ public class ItemNotAvailableException extends zLibraryException {
         this.expectedReturnDay = expectedReturnDay;
     }
 
+    public ItemNotAvailableException(LocalDate expectedReturnDay, Throwable cause) {
+        super("Item is unavailable. Expected return: "+expectedReturnDay, cause);
+        
+        this.expectedReturnDay = expectedReturnDay;
+    }
+
     public LocalDate getExpectedReturnDay() {
         return expectedReturnDay;
     }

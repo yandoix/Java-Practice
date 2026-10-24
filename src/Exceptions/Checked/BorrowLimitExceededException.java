@@ -11,6 +11,11 @@ public class BorrowLimitExceededException extends zLibraryException {
         this.limit = limit;
     }
 
+    public BorrowLimitExceededException(int limit, Throwable cause ) {
+        super("Borrowing limit exceeded. Maximum allowed: "+limit, cause);
+        this.limit = limit;
+    }
+
     public int getLimit() {
         return limit;
     }
