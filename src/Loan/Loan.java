@@ -17,6 +17,19 @@ public class Loan {
     private LocalDate returnDate;
 
     public Loan(String loanID, AItem item, Person member, LocalDate startDate) {
+
+         if (loanID == null || loanID.isBlank()) {
+        throw new IllegalArgumentException("Loan ID must not be blank");
+    }
+    if (item == null) {
+        throw new IllegalArgumentException("Item must not be null");
+    }
+    if (member == null) {
+        throw new IllegalArgumentException("Member must not be null");
+    }
+    if (startDate == null) {
+        throw new IllegalArgumentException("Start date must not be null");
+    }
         this.loanID = loanID;
         this.item = item;
         this.member = member;
