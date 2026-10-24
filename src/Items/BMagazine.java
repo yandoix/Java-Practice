@@ -8,8 +8,8 @@ public class BMagazine extends AItem {
     public BMagazine(String ID, String Title, int Year, Genre Genre, ItemStatus Status, int issueNumber, String publisher) {
 
         super(ID,Title,Year,Genre,Status);
-        this.issueNumber = issueNumber;
-        this.publisher = publisher;
+        setIssueNumber(issueNumber);
+        setPublisher(publisher);
     }
 
     public int getIssueNumber() {return issueNumber;}

@@ -9,12 +9,8 @@ public class BDVD extends AItem {
    public BDVD(String ID, String Title, int Year, Genre Genre, ItemStatus Status, int runtime) {
 
         super(ID, Title,Year,Genre,Status);
-        this.runtime = runtime;
+        setRuntime(runtime);
     }
-   public BDVD(String ID, String Title, ItemStatus Status, int runtime) {
-    super(ID,Title,Status);
-    this.runtime = runtime;
-   }
 
    public int getRuntime(){ return runtime; }
 

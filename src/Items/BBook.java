@@ -12,17 +12,12 @@ public class BBook extends AItem {
         setCount(pageCount);
     }
 
-    public BBook(String ID, String Title, ItemStatus Status, String author,int pageCount) {
-        super(ID,Title,Status);
-        this.author = author;
-        this.pageCount = pageCount;
-    }
 
     public String getAuthor() {return author;}
     public int getCount() {return pageCount;}
 
     public void setAuthor(String author) {
-        if(author==null || author.equals("")) {
+        if(author==null || author.isBlank()) {
             throw new IllegalArgumentException("Author can't be blank");
         }
         this.author = author;

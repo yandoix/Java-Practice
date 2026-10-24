@@ -15,9 +15,6 @@ public abstract class AItem implements Identifiable {
     private Genre genre;
     private ItemStatus Status;
 
-    public AItem(String ID, String Title, ItemStatus Status) {
-        this(ID, Title,2026,Genre.TECH, Status);
-    }
 
     public AItem(String ID, String Title, int Year, Genre genre, ItemStatus Status ) {
         if (ID == null || ID.isBlank()) {
@@ -59,14 +56,14 @@ public abstract class AItem implements Identifiable {
     }
     public void setGenre(Genre genre) {
         if (genre == null) {
-            throw new IllegalArgumentException("The genre is null for the book");
+            throw new NullPointerException("The genre is null for the book");
         }
 
                 this.genre = genre;
     }
     public void setStatus(ItemStatus Status) {
         if (Status == null) {
-            throw new IllegalArgumentException("Status must not be null");
+            throw new NullPointerException("Status must not be null");
         }
         this.Status= Status;
     }

@@ -19,10 +19,18 @@ public abstract class Person implements Identifiable, Feeable {
     }
 
     public Person(String uniqueID, String name, double outstandingFee, List<Loan> loans) {
-
+        
+        if (uniqueID == null || uniqueID.isBlank()) {
+            throw new IllegalArgumentException("ID must not be blank");
+        }
         this.uniqueID = uniqueID;
         setName(name);
-        this.outstandingFee =outstandingFee;
+
+        if (outstandingFee < 0) {
+            throw new IllegalArgumentException(
+                "Outstanding fee must not be negative, got: " + outstandingFee);
+        }
+        this.outstandingFee = outstandingFee;
 
         if (loans != null) {
             this.loans.addAll(loans); // Safely copies the loans list
@@ -36,12 +44,10 @@ public abstract class Person implements Identifiable, Feeable {
     public List<Loan> getLoans() { return Collections.unmodifiableList(loans); }
     
     public void setName(String name) { 
-        if (name != null && !name.trim().isEmpty()) {
-            this.name = name; 
+        if (name == null || name.trim().isEmpty()) {
+            throw new NullPointerException("setName value is empty.");
         }
-    }
-    public void setOutstandingFee(double outstandingFee) { 
-        this.outstandingFee = outstandingFee; 
+        this.name=name;
     }
 
     public void addLoan(Loan loan) {
