@@ -3,9 +3,10 @@ import Interfaces.Identifiable;
 import Exceptions.Unchecked.DuplicateEntityException;
 import Exceptions.Unchecked.EntityNotFoundException;
 
-//import java.util.Collection;
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
+//import java.util.List;
 
 public class Repository<T extends Identifiable> {
 
@@ -50,6 +51,15 @@ public class Repository<T extends Identifiable> {
 
     public boolean contains(String id) {
         return entities.containsKey(id);
+    }
+
+    public int size() {
+        return entities.size();
+    }
+
+    public Collection<T> getAll() {
+
+        return new java.util.ArrayList<>(entities.values());
     }
 
 }

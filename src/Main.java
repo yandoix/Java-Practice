@@ -11,7 +11,7 @@ public class Main {
 
     public static void main(String[] args) {
 
-        // 1. Mixed-list demonstration
+      /*  // 1. Mixed-list demonstration
         List<AItem> items = new ArrayList<>();
 
         items.add(new BBook(
@@ -101,6 +101,18 @@ public class Main {
         // 4. Total number of AItem objects constructed
         System.out.println("\n=== ITEM COUNTER ===");
         System.out.println(
-                "Total items created: " + AItem.getItemCount());
-    }
+                "Total items created: " + AItem.getItemCount());*/
+
+        LinkedQueue<Integer> queue = new LinkedQueue<>();
+        queue.enqueue(10);
+        queue.enqueue(20);  
+        queue.enqueue(30);
+
+        System.out.println(queue.peek());     
+        System.out.println(queue.dequeue());  
+        System.out.println(queue.dequeue());  
+        System.out.println(queue.size());     
+        System.out.println(queue.dequeue());  
+        System.out.println(queue.isEmpty());
+    } 
 }
