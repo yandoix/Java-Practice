@@ -50,7 +50,7 @@ public class Loan {
     public boolean isReturned() { return returnDate != null; }
 
     public void setReturnDate(LocalDate returnDate) {
-        if (returnDate == null) {
+        if (returnDate == null || loanID.isBlank()) {
             throw new IllegalArgumentException("Return date must not be null");
         }
         if (isReturned()) {

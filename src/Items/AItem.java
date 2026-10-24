@@ -73,7 +73,7 @@ public abstract class AItem implements Identifiable {
            "- ID: " + getID() + "\n" +
            "- Title: " + getTitle() + "\n" +
            "- Year: " + getYear() + "\n" +
-           "- Genre: " + (getGenre() != null ? getGenre().getDisplayName() : "None") + "\n" +
+           "- Genre: " +  getGenre().getDisplayName() + "\n" +
            "- Status: " + getStatus() + "\n";
     }
 

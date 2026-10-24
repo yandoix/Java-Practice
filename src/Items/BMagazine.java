@@ -27,13 +27,13 @@ public class BMagazine extends AItem {
         }
         this.publisher = publisher;
     }
-    public void Loan() {
+    /*public void Loan() {
         if (getStatus()==ItemStatus.AVAILABLE) {
 
             setStatus(ItemStatus.ON_LOAN);
             System.out.println("The Magazine "+getTitle()+" is now loaned to");
         }
-    }
+    } */
 
     @Override
     public int getLoanPeriodDays() {

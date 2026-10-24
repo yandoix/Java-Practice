@@ -21,13 +21,13 @@ public class BDVD extends AItem {
     this.runtime = runtime;
    }
 
-   public void Loan() {
+   /*public void Loan() {
         if (getStatus()==ItemStatus.AVAILABLE) {
 
             setStatus(ItemStatus.ON_LOAN);
             System.out.println("The DVD "+getTitle()+" is now loaned to");
         }
-    }
+    }*/
 
     @Override
     public int getLoanPeriodDays() {

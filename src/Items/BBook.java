@@ -29,13 +29,13 @@ public class BBook extends AItem {
          this.pageCount = pageCount;
     }
 
-    public void Loan() {
+    /*public void Loan() {
         if (getStatus()==ItemStatus.AVAILABLE) {
 
             setStatus(ItemStatus.ON_LOAN);
             System.out.println("The Book"+getTitle()+" is now loaned to");
         }
-    }
+    } */
 
     @Override
     public int getLoanPeriodDays() {
