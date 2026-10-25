@@ -2,7 +2,6 @@ import Interfaces.Identifiable;
 
 import Exceptions.Unchecked.DuplicateEntityException;
 import Exceptions.Unchecked.EntityNotFoundException;
-
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
@@ -61,5 +60,4 @@ public class Repository<T extends Identifiable> {
 
         return new java.util.ArrayList<>(entities.values());
     }
-
 }

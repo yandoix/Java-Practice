@@ -114,5 +114,18 @@ public class Main {
         System.out.println(queue.size());     
         System.out.println(queue.dequeue());  
         System.out.println(queue.isEmpty());
+
+        System.out.println("-----Testing Iterator------");
+
+        System.out.println(queue.toString());
+        queue.enqueue(10);
+        queue.enqueue(20);
+        queue.enqueue(30);
+        
+        for (int number : queue) {
+                System.out.println(number);
+        }
+        System.out.println(queue.toString());
+        System.out.println(queue.size()); // 3
     } 
 }
