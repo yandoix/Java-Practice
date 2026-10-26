@@ -61,6 +61,43 @@ public abstract class Person implements Identifiable, Feeable {
         return loans.remove(loan);
     }
 
+    public boolean hasLoans() {
+        return !loans.isEmpty();
+    }
+
+    public void displayLoans() {
+        System.out.println("=== Loans for " + name + " (ID: " + uniqueID + ") ===");
+
+        if (!hasLoans()) {
+            System.out.println("No active loans.");
+            return;
+        }
+
+        System.out.println("Total loans: " + loans.size());
+
+        int number = 1;
+        for (Loan loan : loans) {
+            System.out.println("\nLoan " + number + " of " + loans.size());
+            System.out.println(loan);   // uses Loan.toString()
+            number++;
+        }
+    }
+    // NEW: how many items this person has out right now (loans that are not yet returned)
+    public int getCurrentBorrowedCount() {
+        int count = 0;
+        for (Loan loan : loans) {
+            if (!loan.isReturned()) {
+                count++;
+            }
+        }
+        return count;
+    }
+
+    // NEW: true while the person is under their limit. Day 4's borrow check will use this
+    public boolean canBorrowMore() {
+        return getCurrentBorrowedCount() < getMaxItems();
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
