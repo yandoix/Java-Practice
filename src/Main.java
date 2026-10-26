@@ -1,9 +1,11 @@
 
 import Items.*;
 import Members.*;
+import Audit.*;
 import Util.LinkedQueue;
 import Util.Repository;
 
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
@@ -159,7 +161,12 @@ System.out.println(people.getAll());
         }
         System.out.println(queue.toString());
         System.out.println(queue.size()); // 3
-    } 
+    System.out.println("------Testing Library------");
 
-    Library x = new Library(null, null, null, null, null);
+    AuditLog auditor = new AuditLog();
+
+    Library x = new Library(holder, people, auditor , LocalDate.now());
+
+    System.out.println(x);
+        }
 }

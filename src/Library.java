@@ -1,75 +1,130 @@
-import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
-import java.lang.reflect.Array;
 import java.time.LocalDate;
 import java.util.ArrayDeque;
 import java.util.Deque;
+import java.util.HashMap;
+import java.util.LinkedList;
 import java.util.Map;
 
-import Exceptions.Checked.ImportFailedException;
+import Audit.AuditLog;
+import Exceptions.Checked.BorrowLimitExceededException;
 import Exceptions.Checked.ItemNotAvailableException;
-import Util.LinkedQueue;
+import Exceptions.Checked.OutstandingFeesException;
 import Util.Repository;
 import Items.AItem;
 import Items.ItemStatus;
 import Members.Person;
 import Loan.Loan;
-import Util.Pair;
 
 public class Library {
 
+    private static final double FEE_BLOCK_THRESHOLD = 5.00;   // fees at or above this block borrowing
+    private static final int MAX_FEED_SIZE = 10;
+
     private final Repository<AItem> itemRepository;
-    private final Repository<Person> memberRepository;;
+    private final Repository<Person> memberRepository;
+    private final AuditLog auditLog;
 
     private LocalDate currentDate;
+    private int nextLoanNumber = 1;
     
-    private final List<Loan> loanList;
-    private final List<String> activityFeed;
+    private final Map<String, Loan> activeLoans = new HashMap<>();      // item ID -> the loan it is currently on
+    private final Deque<Loan> undoHistory = new ArrayDeque<>();         // stack of borrows, newest on top
+    private final LinkedList<String> activityFeed = new LinkedList<>();
 
-    private final Pair<String, LinkedQueue<Person>> waitlist;
-    
-    //private ArrayDeque<UndoAction> undoHistory;
-
-    public Library(Repository<AItem> iRepository, Repository<Person> mRepository, List<Loan> loans, List<String> feed, Pair<String, LinkedQueue<Person>> waitlist) {
-
-        this.itemRepository = iRepository;
-        this.memberRepository = mRepository;
-        this.loanList = loans;
-        this.activityFeed = feed;
-        this.waitlist = waitlist;
+     public Library(Repository<AItem> itemRepository, Repository<Person> memberRepository,
+                   AuditLog auditLog, LocalDate startDate) {
+        if (itemRepository == null || memberRepository == null) {
+            throw new IllegalArgumentException("Repositories must not be null");
+        }
+        if (auditLog == null) {
+            throw new IllegalArgumentException("Audit log must not be null");
+        }
+        if (startDate == null) {
+            throw new IllegalArgumentException("Start date must not be null");
+        }
+        this.itemRepository = itemRepository;
+        this.memberRepository = memberRepository;
+        this.auditLog = auditLog;
+        this.currentDate = startDate;
     }
 
-    private Loan getLoanByItem(AItem item, Person peron) {
-    for (Loan loan : person.getLoans()) {
-        if (loan.getItem().getID().equals(item.getID())
-                && !loan.isReturned()) {
+    public LocalDate getCurrentDate() {
+        return currentDate;
+    }
+
+    public void advanceClock(int days) {
+        if (days <= 0) {
+            throw new IllegalArgumentException("Days to advance must be positive, got: " + days);
+        }
+        currentDate = currentDate.plusDays(days);
+    }
+
+    // Read-only view, newest event first
+    public List<String> getActivityFeed() {
+        return Collections.unmodifiableList(activityFeed);
+    }
+
+
+    public Loan borrow(String memberId, String itemId) throws OutstandingFeesException,
+                                                    BorrowLimitExceededException, 
+                                                    ItemNotAvailableException {
+
+        auditLog.add("Borrow attempt: member " + memberId + ", item " + itemId);
+        try {
+
+        if (memberId == null || memberId.isBlank()) {
+                throw new IllegalArgumentException("Member ID must not be blank");
+            }
+        if (itemId == null || itemId.isBlank()) {
+                throw new IllegalArgumentException("Item ID must not be blank");
+            }
+
+        Person member = memberRepository.findById(memberId);
+        AItem item = itemRepository.findById(itemId);
+
+        if (member.getOutstandingFee() >= FEE_BLOCK_THRESHOLD) {
+                throw new OutstandingFeesException(member.getOutstandingFee());
+            }
+
+        if (!member.canBorrowMore()) {
+                throw new BorrowLimitExceededException(member.getMaxItems());
+            }
+
+        if (item.getStatus() == ItemStatus.ON_LOAN) {
+                Loan current = activeLoans.get(item.getID());
+                if (current == null) {
+                    // Status says ON_LOAN but no loan exists: the data is inconsistent, so this is a bug, not a user error
+                    throw new IllegalStateException(
+                        "Item " + item.getID() + " is marked ON_LOAN but has no active loan");
+                    }
+            throw new ItemNotAvailableException(current.getDueDate());
+            }
+        Loan loan = new Loan(String.format("L%03d", nextLoanNumber), item, member, currentDate);
+            nextLoanNumber++;
+
+            member.addLoan(loan);
+            item.setStatus(ItemStatus.ON_LOAN);
+            activeLoans.put(item.getID(), loan);
+            undoHistory.push(loan);
+
+            addToFeed(member.getName() + " (" + member.getID() + ") borrowed \""
+                    + item.getTitle() + "\" (" + item.getID() + "), due " + loan.getDueDate());
+
+            auditLog.add("Borrow succeeded: " + loan.getLoanID());
+
             return loan;
+        } finally {
+            auditLog.add("Borrow attempt finished");
         }
     }
-
-    return null;
-    }
-
-    public void borrow(AItem item, Person person) throws ImportFailedException, 
-                                                        ItemNotAvailableException {
-
-        if(!person.canBorrowMore()) {
-            throw new ImportFailedException("Cannot borrow more until loaned items are returned!");
+    private void addToFeed(String event) {
+        activityFeed.addFirst("[" + currentDate + "] " + event);
+        if (activityFeed.size() > MAX_FEED_SIZE) {
+            activityFeed.removeLast();
         }
-        if(item.getStatus()==ItemStatus.ON_LOAN) {
-            ///logical error: Not giving the expected date of return as defined in the custom exception!
-            throw new ItemNotAvailableException(getLoanByItem(item).getDueDate());
-        }
-
-        Loan loan = new Loan(item.getID(),item,person, currentDate);
-
-        person.addLoan(loan);
-        item.setStatus(ItemStatus.ON_LOAN);
-
-        activityFeed.add(person.getID()+" "+person.getName()+" has loaned a book by ID: "+item.getID());
-
     }
-    
 }
 /*identify and declare fields for:
 - Repositories: the existing repositories for library items and members.
