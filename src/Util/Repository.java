@@ -1,15 +1,19 @@
+package Util;
 import Interfaces.Identifiable;
 
 import Exceptions.Unchecked.DuplicateEntityException;
 import Exceptions.Unchecked.EntityNotFoundException;
 import java.util.Collection;
-import java.util.HashMap;
+//import java.util.HashMap;
+import java.util.TreeMap;
 import java.util.Map;
 //import java.util.List;
 
 public class Repository<T extends Identifiable> {
+    ///Here, Repository<String> doesn't work as it doesn't extend/implement the Identifiable interface, which each
+    /// object created in this code logic must do.
 
-    private final Map<String, T> entities = new HashMap<>();
+    private final Map<String, T> entities = new TreeMap<>();
 
     public void add(T entity) throws DuplicateEntityException {
 

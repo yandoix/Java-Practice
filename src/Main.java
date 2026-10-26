@@ -1,6 +1,8 @@
 
 import Items.*;
 import Members.*;
+import Util.LinkedQueue;
+import Util.Repository;
 
 import java.util.ArrayList;
 import java.util.HashSet;
@@ -103,6 +105,36 @@ public class Main {
         System.out.println(
                 "Total items created: " + AItem.getItemCount());*/
 
+        Repository<AItem> holder = new Repository<>();
+        Repository<Person> people = new Repository<>();
+
+        System.out.println("------Testing Repository------");
+
+// Items (10): 5 books, 2 magazines, 3 DVDs
+holder.add(new BBook("B001", "Book of Disquiet", 2006, Genre.FICTION, ItemStatus.AVAILABLE, "Fernando Pessoa", 120));
+holder.add(new BBook("B002", "Cosmos", 1980, Genre.SCIENCE, ItemStatus.AVAILABLE, "Carl Sagan", 365));
+holder.add(new BBook("B003", "The Guns of August", 1962, Genre.HISTORY, ItemStatus.AVAILABLE, "Barbara Tuchman", 511));
+holder.add(new BBook("B004", "Clean Code", 2008, Genre.TECH, ItemStatus.AVAILABLE, "Robert C. Martin", 464));
+holder.add(new BBook("B005", "Pale Blue Dot", 1994, Genre.SCIENCE, ItemStatus.AVAILABLE, "Carl Sagan", 429));
+holder.add(new BMagazine("M001", "Science Monthly", 2024, Genre.SCIENCE, ItemStatus.AVAILABLE, 12, "Science Publications"));
+holder.add(new BMagazine("M002", "Tech Weekly", 2026, Genre.TECH, ItemStatus.AVAILABLE, 3, "Byte Media"));
+holder.add(new BDVD("D001", "The Matrix", 1999, Genre.TECH, ItemStatus.AVAILABLE, 136));
+holder.add(new BDVD("D002", "Planet Earth", 2006, Genre.SCIENCE, ItemStatus.AVAILABLE, 550));
+holder.add(new BDVD("D003", "Finding Nemo", 2003, Genre.KIDS, ItemStatus.AVAILABLE, 100));
+// Members (5): 3 students, 2 faculty
+people.add(new Student("S001", "Alice"));
+people.add(new Student("S002", "Bob"));
+people.add(new Student("S003", "Charlie"));
+people.add(new Faculty("F001", "Dr. Smith"));
+people.add(new Faculty("F002", "Prof. Lee"));
+
+System.out.println(holder.getAll());
+System.out.println(people.getAll());
+
+
+
+        System.out.println("------Testing Queue------");
+
         LinkedQueue<Integer> queue = new LinkedQueue<>();
         queue.enqueue(10);
         queue.enqueue(20);  
@@ -128,4 +160,6 @@ public class Main {
         System.out.println(queue.toString());
         System.out.println(queue.size()); // 3
     } 
+
+    Library x = new Library(null, null, null, null, null);
 }
